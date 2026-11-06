@@ -12,13 +12,13 @@ module.exports = function(app, shopData) {
     });
     app.get('/search-result', function (req, res) {
         //searching in the database
-        res.send("You searched for: " + req.query.keyword);
+        res.type('text/plain').send("You searched for: " + req.query.keyword);
     });
     app.get('/register', function (req,res) {
         res.render('register.ejs', shopData);                                                                     
     });                                                                                                 
     app.post('/registered', function (req,res) {
         // saving data in database
-        res.send(' Hello '+ req.body.first + ' '+ req.body.last +' you are now registered!  We will send an email to you at ' + req.body.email);                                                                              
+        res.type('text/plain').send(' Hello '+ req.body.first + ' '+ req.body.last +' you are now registered!  We will send an email to you at ' + req.body.email);
     }); 
 }
