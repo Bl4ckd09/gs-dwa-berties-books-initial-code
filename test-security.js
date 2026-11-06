@@ -15,6 +15,7 @@ test('untrusted search and registration fields are sent as text', async () => {
         const input = '<img src=x onerror=alert(1)>';
         const search = await fetch(`${origin}/search-result?keyword=${encodeURIComponent(input)}`);
         assert.match(search.headers.get('content-type'), /^text\/plain/);
+        assert.equal(search.headers.get('x-content-type-options'), 'nosniff');
         assert.match(await search.text(), /<img src=x onerror=alert\(1\)>/);
         const registration = await fetch(`${origin}/registered`, {
             method: 'POST',
@@ -22,6 +23,7 @@ test('untrusted search and registration fields are sent as text', async () => {
             body: new URLSearchParams({ first: input, last: 'Smith', email: 'a@example.com' }),
         });
         assert.match(registration.headers.get('content-type'), /^text\/plain/);
+        assert.equal(registration.headers.get('x-content-type-options'), 'nosniff');
         assert.match(await registration.text(), /<img src=x onerror=alert\(1\)>/);
     } finally {
         server.close();
